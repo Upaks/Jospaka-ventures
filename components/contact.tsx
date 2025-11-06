@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Phone, Mail, Building, Loader2 } from "lucide-react"
 import { useState } from "react"
 import { useToast } from "@/hooks/use-toast"
+import emailjs from "@emailjs/browser"
 
 export function Contact() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -26,19 +27,31 @@ export function Contact() {
     setIsSubmitting(true)
 
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      })
+      // Initialize EmailJS with your public key (if using environment variable)
+      // Or initialize it directly - see setup instructions below
+      
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || ''
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || ''
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ''
 
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to send email")
+      if (!serviceId || !templateId || !publicKey) {
+        throw new Error('EmailJS is not configured. Please add your EmailJS credentials.')
       }
+
+      // Send email using EmailJS
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          phone: formData.phone,
+          company: formData.company || 'Not provided',
+          message: formData.message,
+          to_email: 'jospakavnl@gmail.com',
+        },
+        publicKey
+      )
 
       // Success
       toast({
@@ -50,6 +63,7 @@ export function Contact() {
       // Reset form
       setFormData({ name: "", email: "", phone: "", company: "", message: "" })
     } catch (error) {
+      console.error('EmailJS error:', error)
       toast({
         title: "Failed to Send Request",
         description: error instanceof Error ? error.message : "Please try again or contact us directly at jospakavnl@gmail.com",
