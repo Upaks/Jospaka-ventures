@@ -1,45 +1,31 @@
 "use client"
 
 import { Card } from "@/components/ui/card"
-import { Shield, Award, FileCheck, Users, X } from "lucide-react"
-import Image from "next/image"
-import { useState } from "react"
+import { Shield, Award, FileCheck, Users } from "lucide-react"
 
 export function Safety() {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null)
-
   const certifications = [
     {
       icon: Award,
       title: "ISO 9001:2015",
       description: "Quality Management System Certification",
-      status: "Valid until 2026",
-      image: "/images/certificates/certificate of registration.png",
     },
     {
       icon: FileCheck,
       title: "DPR Permits",
       description: "Department of Petroleum Resources Licensed",
-      status: "Current",
-      image: "/images/certificates/certificate of compliance.png",
     },
     {
       icon: Shield,
       title: "CASHES Policy",
       description: "Community Affairs, Safety, Health, Environment & Security",
-      status: "Implemented",
-      image: "/images/certificates/corporate affairs commission.png",
     },
     {
       icon: Users,
       title: "PENCOM Certified",
       description: "Pension Commission Compliance",
-      status: "Current",
-      image: "/images/certificates/tax clearance.png",
     },
   ]
-
-  const selectedCert = certifications.find((cert) => cert.image === selectedImage)
 
   return (
     <section id="safety" className="py-24 bg-background">
@@ -58,67 +44,16 @@ export function Safety() {
           {certifications.map((cert, index) => {
             const Icon = cert.icon
             return (
-              <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow group">
-                <div 
-                  className="relative w-full h-48 overflow-hidden bg-neutral-50 cursor-pointer"
-                  onClick={() => setSelectedImage(cert.image)}
-                >
-                  <Image
-                    src={cert.image}
-                    alt={cert.title}
-                    fill
-                    className="object-contain p-2 group-hover:scale-105 transition-transform duration-300"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                  />
+              <Card key={index} className="p-6 text-center hover:shadow-lg transition-shadow">
+                <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <Icon className="w-6 h-6 text-orange-600" />
                 </div>
-                <div className="p-6 text-center">
-                  <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center mx-auto mb-3">
-                    <Icon className="w-6 h-6 text-orange-600" />
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2 text-foreground">{cert.title}</h3>
-                  <p className="text-sm text-muted-foreground mb-2">{cert.description}</p>
-                  <p className="text-xs text-orange-600 font-medium">{cert.status}</p>
-                </div>
+                <h3 className="text-lg font-semibold mb-2 text-foreground">{cert.title}</h3>
+                <p className="text-sm text-muted-foreground mb-2">{cert.description}</p>
               </Card>
             )
           })}
         </div>
-
-        {/* Modal/Lightbox */}
-        {selectedImage && (
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
-            onClick={() => setSelectedImage(null)}
-          >
-            <div className="relative max-w-5xl max-h-[90vh] w-full h-full flex items-center justify-center">
-              <button
-                onClick={() => setSelectedImage(null)}
-                className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white backdrop-blur-sm transition-colors"
-                aria-label="Close"
-              >
-                <X className="w-6 h-6" />
-              </button>
-              <div 
-                className="relative w-full h-full flex items-center justify-center"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <Image
-                  src={selectedImage}
-                  alt={selectedCert?.title || "Certificate"}
-                  fill
-                  className="object-contain p-8"
-                  sizes="100vw"
-                  priority
-                />
-              </div>
-              {selectedCert && (
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 text-white text-sm">
-                  {selectedCert.title}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
 
         <div className="bg-slate-900 text-white rounded-2xl p-8 md:p-12">
           <div className="max-w-4xl mx-auto">
