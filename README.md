@@ -100,8 +100,11 @@ The codebase is optimized for [Vercel](https://vercel.com/) (zero-config for Nex
 ## Contact
 For project inquiries or contribution discussions:
 - 📧 `jospakavnl@gmail.com`
+<<<<<<< HEAD
 - 📞 +234 803 898 4112 / +234 810 268 1515 / +234 905 074 0015
 - 📍 Head Office: No. 31 Rumuadaolu Market Road, Port Harcourt, Rivers State, Nigeria
+=======
+>>>>>>> 93a13a86e411c5644e80666583e958cbf99b27d7
 
 ---
 
