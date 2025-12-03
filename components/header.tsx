@@ -295,7 +295,7 @@ export function Header() {
             })}
             <Button
               asChild
-              className="w-full mt-4 mx-4 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white"
+              className="w-full mt-4 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white"
             >
               <Link href="/#contact" onClick={() => setIsMobileMenuOpen(false)}>
                 Get in Touch
