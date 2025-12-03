@@ -3,6 +3,9 @@ import type { Metadata } from "next"
 import { Space_Grotesk, Inter } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { Toaster } from "@/components/ui/toaster"
+import { WhatsAppButton } from "@/components/whatsapp-button"
+import { ScrollToTop } from "@/components/scroll-to-top"
+import { SmoothScroll } from "@/components/smooth-scroll"
 import "./globals.css"
 
 const spaceGrotesk = Space_Grotesk({
@@ -138,7 +141,10 @@ export default function RootLayout({
         />
       </head>
       <body className={`${spaceGrotesk.variable} ${inter.variable} font-body antialiased`}>
+        <SmoothScroll />
         {children}
+        <WhatsAppButton />
+        <ScrollToTop />
         <Analytics />
         <Toaster />
       </body>

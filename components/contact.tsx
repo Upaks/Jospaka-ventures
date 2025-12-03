@@ -5,31 +5,46 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Phone, Mail, Building, Loader2 } from "lucide-react"
+import { Phone, Mail, Building, Loader2, MessageCircle } from "lucide-react"
 import { useState } from "react"
 import { useToast } from "@/hooks/use-toast"
 import emailjs from "@emailjs/browser"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
+
+const formSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Please enter a valid email address"),
+  phone: z.string().min(10, "Please enter a valid phone number"),
+  company: z.string().optional(),
+  message: z.string().min(10, "Message must be at least 10 characters"),
+})
+
+type FormData = z.infer<typeof formSchema>
 
 export function Contact() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    company: "",
-    message: "",
+  
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      company: "",
+      message: "",
+    },
   })
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-
+  const onSubmit = async (data: FormData) => {
     try {
-      // Initialize EmailJS with your public key (if using environment variable)
-      // Or initialize it directly - see setup instructions below
-      
       const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || ''
       const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || ''
       const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ''
@@ -43,11 +58,11 @@ export function Contact() {
         serviceId,
         templateId,
         {
-          from_name: formData.name,
-          from_email: formData.email,
-          phone: formData.phone,
-          company: formData.company || 'Not provided',
-          message: formData.message,
+          from_name: data.name,
+          from_email: data.email,
+          phone: data.phone,
+          company: data.company || 'Not provided',
+          message: data.message,
           to_email: 'jospakavnl@gmail.com',
         },
         publicKey
@@ -60,17 +75,14 @@ export function Contact() {
       })
       
       setIsDialogOpen(false)
-      // Reset form
-      setFormData({ name: "", email: "", phone: "", company: "", message: "" })
+      reset()
     } catch (error) {
       console.error('EmailJS error:', error)
       toast({
         title: "Failed to Send Request",
-        description: error instanceof Error ? error.message : "Please try again or contact us directly at jospakavnl@gmail.com",
+        description: error instanceof Error ? error.message : "Please try again or contact us directly at jospakavnl@gmail.com. You can also call us directly.",
         variant: "destructive",
       })
-    } finally {
-      setIsSubmitting(false)
     }
   }
 
@@ -118,9 +130,15 @@ export function Contact() {
                 </div>
                 <div>
                   <h4 className="font-semibold mb-2 text-foreground">Phone</h4>
-                  <p className="text-muted-foreground">+234 803 898 4112</p>
-                  <p className="text-muted-foreground">+234 810 268 1515</p>
-                  <p className="text-muted-foreground">+234 905 074 0015</p>
+                  <a href="tel:+2348038984112" className="block text-muted-foreground hover:text-orange-500 transition-colors mb-1">
+                    +234 803 898 4112
+                  </a>
+                  <a href="tel:+2348102681515" className="block text-muted-foreground hover:text-orange-500 transition-colors mb-1">
+                    +234 810 268 1515
+                  </a>
+                  <a href="tel:+2349050740015" className="block text-muted-foreground hover:text-orange-500 transition-colors">
+                    +234 905 074 0015
+                  </a>
                 </div>
               </div>
 
@@ -134,6 +152,18 @@ export function Contact() {
                     jospakavnl@gmail.com
                   </a>
                 </div>
+              </div>
+
+              <div className="pt-4 border-t border-neutral-200">
+                <a
+                  href="https://wa.me/2348038984112?text=Hello%2C%20I%20would%20like%20to%20inquire%20about%20your%20engineering%20and%20construction%20services"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition-colors shadow-lg shadow-green-500/30"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  Chat on WhatsApp
+                </a>
               </div>
             </div>
           </Card>
@@ -178,14 +208,14 @@ export function Contact() {
 
         {/* Consultation Request Dialog */}
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogContent className="sm:max-w-[600px]">
+          <DialogContent className="max-w-[calc(100vw-1rem)] sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle className="text-2xl font-bold text-charcoal-900">Request a Consultation</DialogTitle>
-              <DialogDescription className="text-base">
+              <DialogTitle className="text-xl sm:text-2xl font-bold text-charcoal-900">Request a Consultation</DialogTitle>
+              <DialogDescription className="text-sm sm:text-base">
                 Fill out the form below and we'll get back to you as soon as possible to discuss your project needs.
               </DialogDescription>
             </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="name" className="text-sm font-medium text-foreground mb-2 block">
@@ -193,12 +223,14 @@ export function Contact() {
                   </label>
                   <Input
                     id="name"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    {...register("name")}
                     placeholder="John Doe"
                     className="w-full"
+                    aria-invalid={errors.name ? "true" : "false"}
                   />
+                  {errors.name && (
+                    <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>
+                  )}
                 </div>
                 <div>
                   <label htmlFor="email" className="text-sm font-medium text-foreground mb-2 block">
@@ -207,12 +239,14 @@ export function Contact() {
                   <Input
                     id="email"
                     type="email"
-                    required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    {...register("email")}
                     placeholder="john@example.com"
                     className="w-full"
+                    aria-invalid={errors.email ? "true" : "false"}
                   />
+                  {errors.email && (
+                    <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
+                  )}
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -223,12 +257,14 @@ export function Contact() {
                   <Input
                     id="phone"
                     type="tel"
-                    required
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    {...register("phone")}
                     placeholder="+234 800 000 0000"
                     className="w-full"
+                    aria-invalid={errors.phone ? "true" : "false"}
                   />
+                  {errors.phone && (
+                    <p className="text-sm text-red-500 mt-1">{errors.phone.message}</p>
+                  )}
                 </div>
                 <div>
                   <label htmlFor="company" className="text-sm font-medium text-foreground mb-2 block">
@@ -236,8 +272,7 @@ export function Contact() {
                   </label>
                   <Input
                     id="company"
-                    value={formData.company}
-                    onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                    {...register("company")}
                     placeholder="Your Company"
                     className="w-full"
                   />
@@ -249,19 +284,21 @@ export function Contact() {
                 </label>
                 <Textarea
                   id="message"
-                  required
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  {...register("message")}
                   placeholder="Tell us about your project requirements..."
                   className="w-full min-h-[120px]"
+                  aria-invalid={errors.message ? "true" : "false"}
                 />
+                {errors.message && (
+                  <p className="text-sm text-red-500 mt-1">{errors.message.message}</p>
+                )}
               </div>
-              <div className="flex gap-3 pt-4">
+              <div className="flex flex-col sm:flex-row gap-3 pt-4">
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => setIsDialogOpen(false)}
-                  className="flex-1"
+                  className="w-full sm:flex-1"
                   disabled={isSubmitting}
                 >
                   Cancel
@@ -269,7 +306,7 @@ export function Contact() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white disabled:opacity-50"
+                  className="w-full sm:flex-1 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <>

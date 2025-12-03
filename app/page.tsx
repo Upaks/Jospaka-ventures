@@ -6,6 +6,7 @@ import { Vision } from "@/components/vision"
 import { Projects } from "@/components/projects"
 import { Testimonials } from "@/components/testimonials"
 import { Safety } from "@/components/safety"
+import { BlogPreview } from "@/components/blog-preview"
 import { FAQ } from "@/components/faq"
 import { Contact } from "@/components/contact"
 import { Footer } from "@/components/footer"
@@ -21,6 +22,7 @@ export default function Home() {
       <Projects />
       <Testimonials />
       <Safety />
+      <BlogPreview />
       <FAQ />
       <Contact />
       <Footer />

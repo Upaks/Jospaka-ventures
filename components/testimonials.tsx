@@ -121,21 +121,21 @@ export function Testimonials() {
 
           {/* Trust badge */}
           <div className="mt-16 text-center">
-            <div className="inline-flex items-center gap-4 px-8 py-4 bg-white rounded-full border border-orange-200/50 shadow-sm">
-              <div className="flex items-center gap-1">
+            <div className="inline-flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 px-4 sm:px-6 md:px-8 py-4 bg-white rounded-full border border-orange-200/50 shadow-sm max-w-full mx-auto">
+              <div className="flex items-center gap-1 flex-shrink-0">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    className="w-5 h-5 fill-orange-500 text-orange-500"
+                    className="w-4 h-4 sm:w-5 sm:h-5 fill-orange-500 text-orange-500"
                   />
                 ))}
               </div>
-              <div className="h-6 w-px bg-neutral-200" />
-              <span className="text-sm font-semibold text-charcoal-900">
+              <div className="hidden sm:block h-6 w-px bg-neutral-200" />
+              <span className="text-xs sm:text-sm font-semibold text-charcoal-900 whitespace-nowrap">
                 20+ Years of Excellence
               </span>
-              <div className="h-6 w-px bg-neutral-200" />
-              <span className="text-sm font-semibold text-neutral-600">
+              <div className="hidden sm:block h-6 w-px bg-neutral-200" />
+              <span className="text-xs sm:text-sm font-semibold text-neutral-600 whitespace-nowrap">
                 45+ Successful Projects
               </span>
             </div>
