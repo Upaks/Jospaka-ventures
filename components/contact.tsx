@@ -12,7 +12,6 @@ import emailjs from "@emailjs/browser"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import { ScrollAnimate } from "@/components/scroll-animate"
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -133,16 +132,14 @@ export function Contact() {
   return (
     <section id="contact" className="py-24 bg-muted/30">
       <div className="container mx-auto px-4">
-        <ScrollAnimate animation="fade-up" rootMargin="-50px">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
-              Get in <span className="text-gradient bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">Touch</span>
-            </h2>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              Ready to discuss your next project? Contact us today for a consultation
-            </p>
-          </div>
-        </ScrollAnimate>
+        <div className="max-w-3xl mx-auto text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
+            Get in <span className="text-gradient bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">Touch</span>
+          </h2>
+          <p className="text-lg text-muted-foreground leading-relaxed">
+            Ready to discuss your next project? Contact us today for a consultation
+          </p>
+        </div>
 
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           <Card className="p-8">

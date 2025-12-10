@@ -2,7 +2,6 @@
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { HelpCircle } from "lucide-react"
-import { ScrollAnimate } from "@/components/scroll-animate"
 
 export function FAQ() {
   const faqs = [
@@ -62,19 +61,17 @@ export function FAQ() {
       />
       <section id="faq" className="py-24 bg-gradient-to-br from-white via-neutral-50 to-orange-50/20 relative overflow-hidden">
       <div className="container mx-auto px-4 lg:px-8">
-        <ScrollAnimate animation="fade-up" rootMargin="-50px">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <div className="inline-block px-4 py-2 bg-gradient-to-r from-orange-100 to-amber-100 text-orange-700 rounded-full text-sm font-semibold mb-6 border border-orange-200/50">
-              Common Questions
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-charcoal-900">
-              Frequently Asked <span className="text-gradient bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">Questions</span>
-            </h2>
-            <p className="text-lg text-neutral-600 leading-relaxed">
-              Find answers to common questions about our services, expertise, and how we can help with your project
-            </p>
+        <div className="max-w-3xl mx-auto text-center mb-16">
+          <div className="inline-block px-4 py-2 bg-gradient-to-r from-orange-100 to-amber-100 text-orange-700 rounded-full text-sm font-semibold mb-6 border border-orange-200/50">
+            Common Questions
           </div>
-        </ScrollAnimate>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-charcoal-900">
+            Frequently Asked <span className="text-gradient bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">Questions</span>
+          </h2>
+          <p className="text-lg text-neutral-600 leading-relaxed">
+            Find answers to common questions about our services, expertise, and how we can help with your project
+          </p>
+        </div>
 
         <div className="max-w-4xl mx-auto">
           <Accordion type="single" collapsible className="w-full space-y-4">

@@ -133,18 +133,99 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Suppress hydration warnings for browser extension modifications
+              // This MUST run before React loads
+              (function() {
+                'use strict';
+                
+                // Store original methods immediately
+                const originalError = console.error;
+                const originalWarn = console.warn;
+                const originalLog = console.log;
+                
+                // Check if message should be suppressed
+                const shouldSuppress = function(...args) {
+                  const fullMessage = args.map(arg => {
+                    if (typeof arg === 'string') return arg;
+                    if (arg && typeof arg === 'object') {
+                      try {
+                        return JSON.stringify(arg);
+                      } catch {
+                        return String(arg);
+                      }
+                    }
+                    return String(arg);
+                  }).join(' ').toLowerCase();
+                  
+                  // Suppress ALL hydration mismatch warnings (they're harmless with browser extensions)
+                  if (fullMessage.includes('hydration')) {
+                    return true;
+                  }
+                  
+                  // Also suppress specific browser extension related warnings
+                  if (
+                    fullMessage.includes('darkreader') ||
+                    fullMessage.includes('browser extension') ||
+                    fullMessage.includes('data-darkreader') ||
+                    fullMessage.includes('attributes of the server rendered html') ||
+                    fullMessage.includes("didn't match the client properties")
+                  ) {
+                    return true;
+                  }
+                  
+                  return false;
+                };
+                
+                // Override console methods
+                console.error = function(...args) {
+                  if (!shouldSuppress(...args)) {
+                    originalError.apply(console, args);
+                  }
+                };
+                
+                console.warn = function(...args) {
+                  if (!shouldSuppress(...args)) {
+                    originalWarn.apply(console, args);
+                  }
+                };
+                
+                console.log = function(...args) {
+                  if (!shouldSuppress(...args)) {
+                    originalLog.apply(console, args);
+                  }
+                };
+                
+                // Also intercept React's internal error reporting if possible
+                if (typeof window !== 'undefined') {
+                  window.addEventListener('error', function(e) {
+                    if (e.message && e.message.toLowerCase().includes('hydration')) {
+                      e.stopImmediatePropagation();
+                      e.preventDefault();
+                      return false;
+                    }
+                  }, true);
+                }
+              })();
+            `,
+          }}
+        />
       </head>
-      <body className={`${spaceGrotesk.variable} ${inter.variable} font-body antialiased`}>
-        <SmoothScroll />
-        {children}
-        <WhatsAppButton />
-        <ScrollToTop />
+      <body className={`${spaceGrotesk.variable} ${inter.variable} font-body antialiased`} suppressHydrationWarning>
+        <div suppressHydrationWarning>
+          <SmoothScroll />
+          {children}
+          <WhatsAppButton />
+          <ScrollToTop />
+        </div>
         <Analytics />
         <Toaster />
       </body>

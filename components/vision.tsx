@@ -2,7 +2,6 @@
 
 import { Card } from "@/components/ui/card"
 import { Target, Compass, TrendingUp } from "lucide-react"
-import { ScrollAnimate } from "@/components/scroll-animate"
 
 export function Vision() {
   return (
@@ -14,25 +13,22 @@ export function Vision() {
 
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
         {/* Header Section */}
-        <ScrollAnimate animation="fade-up" rootMargin="-50px">
-          <div className="max-w-3xl mx-auto text-center mb-16 lg:mb-20">
-            <div className="inline-block px-4 py-2 bg-gradient-to-r from-orange-100 to-amber-100 text-orange-700 rounded-full text-sm font-semibold mb-6 border border-orange-200/50">
-              Our Foundation
-            </div>
-            <h2 className="font-heading font-bold text-4xl sm:text-5xl lg:text-6xl mb-6 text-charcoal-900">
-              Vision, Mission & <span className="text-gradient bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">Goals</span>
-            </h2>
-            <p className="text-lg text-neutral-600 leading-relaxed">
-              The principles that guide our engineering excellence and drive our commitment to delivering world-class solutions
-            </p>
+        <div className="max-w-3xl mx-auto text-center mb-16 lg:mb-20">
+          <div className="inline-block px-4 py-2 bg-gradient-to-r from-orange-100 to-amber-100 text-orange-700 rounded-full text-sm font-semibold mb-6 border border-orange-200/50">
+            Our Foundation
           </div>
-        </ScrollAnimate>
+          <h2 className="font-heading font-bold text-4xl sm:text-5xl lg:text-6xl mb-6 text-charcoal-900">
+            Vision, Mission & <span className="text-gradient bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">Goals</span>
+          </h2>
+          <p className="text-lg text-neutral-600 leading-relaxed">
+            The principles that guide our engineering excellence and drive our commitment to delivering world-class solutions
+          </p>
+        </div>
 
         {/* Cards Grid */}
         <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
           {/* Vision Card */}
-          <ScrollAnimate animation="fade-up" delay={0} rootMargin="-50px">
-            <Card className="group relative p-8 lg:p-10 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-orange-500/30 bg-white/80 backdrop-blur-sm overflow-hidden">
+          <Card className="group relative p-8 lg:p-10 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-orange-500/30 bg-white/80 backdrop-blur-sm overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-500/10 to-transparent rounded-bl-full -z-10" />
             <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-amber-500/5 to-transparent rounded-tr-full -z-10" />
             
@@ -54,11 +50,9 @@ export function Vision() {
               </div>
             </div>
           </Card>
-          </ScrollAnimate>
 
           {/* Mission Card */}
-          <ScrollAnimate animation="fade-up" delay={100} rootMargin="-50px">
-            <Card className="group relative p-8 lg:p-10 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-orange-500/30 bg-white/80 backdrop-blur-sm overflow-hidden">
+          <Card className="group relative p-8 lg:p-10 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-orange-500/30 bg-white/80 backdrop-blur-sm overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-amber-500/10 to-transparent rounded-bl-full -z-10" />
             <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-orange-500/5 to-transparent rounded-tr-full -z-10" />
             
@@ -90,11 +84,9 @@ export function Vision() {
               </div>
             </div>
           </Card>
-          </ScrollAnimate>
 
           {/* Goals Card */}
-          <ScrollAnimate animation="fade-up" delay={200} rootMargin="-50px">
-            <Card className="group relative p-8 lg:p-10 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-orange-500/30 bg-white/80 backdrop-blur-sm overflow-hidden">
+          <Card className="group relative p-8 lg:p-10 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-orange-500/30 bg-white/80 backdrop-blur-sm overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-400/10 to-transparent rounded-bl-full -z-10" />
             <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-amber-400/5 to-transparent rounded-tr-full -z-10" />
             
@@ -126,7 +118,6 @@ export function Vision() {
               </div>
             </div>
           </Card>
-          </ScrollAnimate>
         </div>
 
         {/* Bottom decorative element */}
