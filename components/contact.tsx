@@ -12,6 +12,7 @@ import emailjs from "@emailjs/browser"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
+import { ScrollAnimate } from "@/components/scroll-animate"
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -25,6 +26,7 @@ type FormData = z.infer<typeof formSchema>
 
 export function Contact() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [lastSubmissionTime, setLastSubmissionTime] = useState<number>(0)
   const { toast } = useToast()
   
   const {
@@ -45,6 +47,21 @@ export function Contact() {
 
   const onSubmit = async (data: FormData) => {
     try {
+      // Rate limiting: prevent spam submissions (max 1 per 30 seconds)
+      const now = Date.now()
+      const timeSinceLastSubmission = now - lastSubmissionTime
+      const RATE_LIMIT_MS = 30000 // 30 seconds
+
+      if (timeSinceLastSubmission < RATE_LIMIT_MS) {
+        const remainingSeconds = Math.ceil((RATE_LIMIT_MS - timeSinceLastSubmission) / 1000)
+        toast({
+          title: "Please wait",
+          description: `To prevent spam, please wait ${remainingSeconds} second${remainingSeconds > 1 ? 's' : ''} before submitting again.`,
+          variant: "destructive",
+        })
+        return
+      }
+
       const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || ''
       const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || ''
       const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ''
@@ -68,6 +85,9 @@ export function Contact() {
         publicKey
       )
 
+      // Update last submission time
+      setLastSubmissionTime(now)
+
       // Success
       toast({
         title: "Request Sent Successfully!",
@@ -77,7 +97,10 @@ export function Contact() {
       setIsDialogOpen(false)
       reset()
     } catch (error) {
-      console.error('EmailJS error:', error)
+      // Only log errors in development
+      if (process.env.NODE_ENV === 'development') {
+        console.error('EmailJS error:', error)
+      }
       toast({
         title: "Failed to Send Request",
         description: error instanceof Error ? error.message : "Please try again or contact us directly at jospakavnl@gmail.com. You can also call us directly.",
@@ -110,14 +133,16 @@ export function Contact() {
   return (
     <section id="contact" className="py-24 bg-muted/30">
       <div className="container mx-auto px-4">
-        <div className="max-w-3xl mx-auto text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
-            Get in <span className="text-gradient bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">Touch</span>
-          </h2>
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            Ready to discuss your next project? Contact us today for a consultation
-          </p>
-        </div>
+        <ScrollAnimate animation="fade-up" rootMargin="-50px">
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
+              Get in <span className="text-gradient bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">Touch</span>
+            </h2>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              Ready to discuss your next project? Contact us today for a consultation
+            </p>
+          </div>
+        </ScrollAnimate>
 
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           <Card className="p-8">

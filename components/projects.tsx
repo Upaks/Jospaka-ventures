@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Building, MapPin, Calendar, X, ChevronLeft, ChevronRight } from "lucide-react"
 import Image from "next/image"
 import { useState } from "react"
+import { ScrollAnimate } from "@/components/scroll-animate"
 
 export function Projects() {
   const featuredProjects = [
@@ -95,18 +96,26 @@ export function Projects() {
   return (
     <section id="projects" className="py-24 bg-muted/30">
       <div className="container mx-auto px-4">
-        <div className="max-w-3xl mx-auto text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
-            Featured <span className="text-gradient bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">Projects</span>
-          </h2>
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            Over 45 successfully completed projects for major oil & gas companies across Nigeria
-          </p>
-        </div>
+        <ScrollAnimate animation="fade-up" rootMargin="-50px">
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
+              Featured <span className="text-gradient bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">Projects</span>
+            </h2>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              Over 45 successfully completed projects for major oil & gas companies across Nigeria
+            </p>
+          </div>
+        </ScrollAnimate>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {featuredProjects.map((project, index) => (
-            <Card key={index} className="overflow-hidden hover:shadow-lg transition-all hover:-translate-y-1 duration-300">
+            <ScrollAnimate
+              key={index}
+              animation="fade-up"
+              delay={index * 100}
+              rootMargin="-50px"
+            >
+              <Card className="overflow-hidden hover:shadow-lg transition-all hover:-translate-y-1 duration-300">
               {project.image && (
                 <div 
                   className="relative w-full h-48 overflow-hidden cursor-pointer"
@@ -155,6 +164,7 @@ export function Projects() {
                 </div>
               </div>
             </Card>
+            </ScrollAnimate>
           ))}
         </div>
 
