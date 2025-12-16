@@ -41,6 +41,14 @@ export function BlogPostClient() {
     }
   }, [postId])
 
+  // Scroll to top when navigating to a new blog post
+  useEffect(() => {
+    // Use requestAnimationFrame to ensure DOM is ready
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, behavior: 'instant' })
+    })
+  }, [postId])
+
   if (loading) {
     return (
       <>
