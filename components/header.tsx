@@ -32,6 +32,8 @@ export function Header() {
         }
       } else if (window.location.pathname.startsWith("/blog")) {
         setActiveSection("blog")
+      } else if (window.location.pathname.startsWith("/gallery")) {
+        setActiveSection("gallery")
       }
     }
 
@@ -44,6 +46,7 @@ export function Header() {
     { label: "About", href: "#about" },
     { label: "Services", href: "#services" },
     { label: "Projects", href: "#projects" },
+    { label: "Gallery", href: "/gallery" },
     { label: "Safety", href: "#safety" },
     { label: "Blog", href: "/blog" },
     { label: "FAQ", href: "#faq" },

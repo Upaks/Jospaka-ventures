@@ -2,8 +2,10 @@
 
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Building, MapPin, Calendar, X, ChevronLeft, ChevronRight } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 import { useState } from "react"
 
 export function Projects() {
@@ -232,9 +234,16 @@ export function Projects() {
         )}
 
         <div className="mt-12 text-center">
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground mb-4">
             View our complete project portfolio and certifications in our company profile
           </p>
+          <Button
+            asChild
+            variant="outline"
+            className="border-orange-200 text-orange-600 hover:bg-orange-50"
+          >
+            <Link href="/gallery">View Gallery →</Link>
+          </Button>
         </div>
       </div>
     </section>

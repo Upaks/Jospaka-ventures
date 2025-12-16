@@ -167,7 +167,13 @@ export default function RootLayout({
                   }).join(' ').toLowerCase();
                   
                   // Suppress ALL hydration mismatch warnings (they're harmless with browser extensions)
-                  if (fullMessage.includes('hydration')) {
+                  if (fullMessage.includes('hydration') || 
+                      fullMessage.includes('hydrated') ||
+                      fullMessage.includes('server rendered') ||
+                      fullMessage.includes('client properties') ||
+                      fullMessage.includes("didn't match") ||
+                      fullMessage.includes('attributes of the server') ||
+                      fullMessage.includes('tree hydrated')) {
                     return true;
                   }
                   
@@ -176,8 +182,8 @@ export default function RootLayout({
                     fullMessage.includes('darkreader') ||
                     fullMessage.includes('browser extension') ||
                     fullMessage.includes('data-darkreader') ||
-                    fullMessage.includes('attributes of the server rendered html') ||
-                    fullMessage.includes("didn't match the client properties")
+                    fullMessage.includes('--darkreader') ||
+                    fullMessage.includes('darkreader-inline')
                   ) {
                     return true;
                   }
@@ -206,13 +212,25 @@ export default function RootLayout({
                 
                 // Also intercept React's internal error reporting if possible
                 if (typeof window !== 'undefined') {
+                  // Intercept window errors
                   window.addEventListener('error', function(e) {
-                    if (e.message && e.message.toLowerCase().includes('hydration')) {
+                    const errorMsg = (e.message || '').toLowerCase();
+                    if (errorMsg.includes('hydration') || 
+                        errorMsg.includes('darkreader') ||
+                        errorMsg.includes('server rendered')) {
                       e.stopImmediatePropagation();
                       e.preventDefault();
                       return false;
                     }
                   }, true);
+                  
+                  // Intercept unhandled promise rejections
+                  window.addEventListener('unhandledrejection', function(e) {
+                    const reason = String(e.reason || '').toLowerCase();
+                    if (reason.includes('hydration') || reason.includes('darkreader')) {
+                      e.preventDefault();
+                    }
+                  });
                 }
               })();
             `,
